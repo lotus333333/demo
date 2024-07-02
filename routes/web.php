@@ -18,3 +18,4 @@ Route::get('/', 'App\Http\Controllers\StaticPagesController@home')->name('home')
 Route::get('/help', 'App\Http\Controllers\StaticPagesController@help')->name('help');
 Route::get('/about', 'App\Http\Controllers\StaticPagesController@about')->name('about');
 Route::get('signup','App\Http\Controllers\UsersController@create')->name('signup');
+Route::resource('users','App\Http\Controllers\UsersController');

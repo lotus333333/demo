@@ -42,4 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //生成用户的头像
+    public function gravatar($size = '100')
+    {
+        $hash = md5(strtolower(trim($this->attributes['email'])));
+        // 使用 robohash.org 生成机器人头像
+        return "https://robohash.org/$hash?s=$size";
+    }
+
 }
