@@ -16,6 +16,12 @@ class UsersController extends Controller
             'except' => ['show', 'create', 'store']
         ]);
     }
+    //中间件except中新增index允许游客访问
+    public function index()
+    {
+        $users = User::all();
+        return view('users.index', compact('users'));
+    }
     //显示用户创建用户表单
     public function create()
     {
