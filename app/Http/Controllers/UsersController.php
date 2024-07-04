@@ -9,6 +9,13 @@ use Illuminate\Validation\ValidationException;
 
 class UsersController extends Controller
 {
+    //中间件过滤未登录的用户
+    public function __construct()
+    {
+        $this->middleware('auth', [
+            'except' => ['show', 'create', 'store']
+        ]);
+    }
     //显示用户创建用户表单
     public function create()
     {
@@ -46,23 +53,27 @@ class UsersController extends Controller
     //编辑用户
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
-    //更新用户提交的个人信息
-    public function update(Request $request, User $user)
+    public function update(User $user, Request $request)
     {
-        $this->validate($request,[
+        $this->authorize('update', $user);
+        $this->validate($request, [
             'name' => 'required|max:50',
-            'password' => 'required|confirmed|min:6'
+            'password' => 'nullable|confirmed|min:6'
         ]);
-        $data=[];
-        $data['name']=$request->name;
-        if ($request->password){
-            $data['password']=bcrypt($request->password);
+
+        $data = [];
+        $data['name'] = $request->name;
+        if ($request->password) {
+            $data['password'] = bcrypt($request->password);
         }
         $user->update($data);
-        session()->flash('success','个人资料更新成功！');
+
+        session()->flash('success', '个人资料更新成功！');
+
         return redirect()->route('users.show', $user);
     }
 }
