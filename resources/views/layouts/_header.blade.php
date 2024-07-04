@@ -1,3 +1,12 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Example</title>
+</head>
+<body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container ">
         <a class="navbar-brand" href="{{ route('home') }}">Weibo App</a>
@@ -28,3 +37,8 @@
         </ul>
     </div>
 </nav>
+<!-- 引入 Bootstrap Bundle JS (includes Popper) -->
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+</body>
+</html>
