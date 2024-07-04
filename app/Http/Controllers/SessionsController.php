@@ -9,6 +9,9 @@ class SessionsController extends Controller
 {
     public function create()
     {
+        if(Auth::user()&&Auth::viaRemember()){
+            return redirect()->route('users.show',[Auth::user()]);
+        }
         return view('sessions.create');
     }
     //用户登录
@@ -18,8 +21,10 @@ class SessionsController extends Controller
             'email' => 'required|email|max:255',
             'password' => 'required'
         ]);
-
-        if (Auth::attempt($credentials)) {
+        //Auth::attempt() 方法可接收两个参数，
+        //第一个参数为需要进行用户身份认证的数组，
+        //第二个参数为是否为用户开启『记住我』功能的布尔值
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
             session()->flash('success', '欢迎回来！');
             return redirect()->route('users.show', [Auth::user()]);
         } else {
@@ -34,5 +39,6 @@ class SessionsController extends Controller
         session()->flash('success','您已成功退出！');
         return redirect('login');
     }
+
 }
 
