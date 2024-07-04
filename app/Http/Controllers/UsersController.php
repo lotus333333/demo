@@ -9,11 +9,12 @@ use Illuminate\Validation\ValidationException;
 
 class UsersController extends Controller
 {
+    //显示用户创建用户表单
     public function create()
     {
         return view('users.create');
     }
-
+    //显示指定用户的详细信息
     public function show(User $user)
     {
         return view('users.show', compact('user'));
@@ -22,6 +23,7 @@ class UsersController extends Controller
     /**
      * @throws ValidationException
      */
+    //处理用户注册信息的存储
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -39,5 +41,28 @@ class UsersController extends Controller
         Auth::login($user);
         session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
         return redirect()->route('users.show', [$user]);
+    }
+
+    //编辑用户
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    //更新用户提交的个人信息
+    public function update(Request $request, User $user)
+    {
+        $this->validate($request,[
+            'name' => 'required|max:50',
+            'password' => 'required|confirmed|min:6'
+        ]);
+        $data=[];
+        $data['name']=$request->name;
+        if ($request->password){
+            $data['password']=bcrypt($request->password);
+        }
+        $user->update($data);
+        session()->flash('success','个人资料更新成功！');
+        return redirect()->route('users.show', $user);
     }
 }
