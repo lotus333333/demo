@@ -12,12 +12,13 @@ class UserPolicy
      * Create a new policy instance.
      */
     use HandlesAuthorization;
-    public  function update(User $user, User $currentUser)
+    public function update(User $currentUser, User $user)
     {
-        return $currentUser->id===$user->id;
+        return $currentUser->id === $user->id;
     }
-    public function __construct()
+
+    public function destroy(User $currentUser, User $user)
     {
-        //
+        return $currentUser->is_admin && $currentUser->id !== $user->id;
     }
 }

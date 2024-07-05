@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store']
+            'except' => ['show', 'create', 'store','index']
         ]);
     }
     //中间件except中新增index允许游客访问
@@ -63,6 +64,10 @@ class UsersController extends Controller
         return view('users.edit', compact('user'));
     }
 
+    /**
+     * @throws AuthorizationException
+     * @throws ValidationException
+     */
     public function update(User $user, Request $request)
     {
         $this->authorize('update', $user);
@@ -82,4 +87,17 @@ class UsersController extends Controller
 
         return redirect()->route('users.show', $user);
     }
+    //删除用户
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success',"成功删除用户！");
+        return back();
+    }
+
 }
