@@ -19,7 +19,7 @@ class UsersController extends Controller
     //中间件except中新增index允许游客访问
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(6);
         return view('users.index', compact('users'));
     }
     //显示用户创建用户表单
