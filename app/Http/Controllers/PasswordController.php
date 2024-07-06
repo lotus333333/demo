@@ -17,7 +17,27 @@ class PasswordController extends Controller
     {
         return view('auth.passwords.email');
     }
+    public function __construct()
+    {
+        //忘记密码限流
+        $this->middleware('throttle:2,1', [
+            'only' => ['showLinkRequestForm']
+        ]);
 
+        //发送密码重置邮件，限流规则为 —— 10 分钟内只能尝试 3 次
+        $this->middleware('throttle:3,10', [
+            'only' => ['sendResetLinkEmail']
+        ]);
+
+        //登录限流
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+        // 限流 10 分钟十次
+        $this->middleware('throttle:10,10', [
+            'only' => ['store']
+        ]);
+    }
     public function sendResetLinkEmail(Request $request)
     {
         // 1. 验证邮箱
