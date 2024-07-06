@@ -9,22 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->boolean('is_admin')->default(false);
+            $table->string('activation_token')->nullable();
+            $table->boolean('activated')->default(false);
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    /*public function down()
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->dropColumn('is_admin');
+            $table->dropColumn('activation_token');
+            $table->dropColumn('activated');
         });
-    }*/
+    }
 };

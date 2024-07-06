@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use Illuminate\Support\Str;
 /**
  * @method static paginate(int $int)
  * @method static find(int $int)
@@ -55,4 +55,13 @@ class User extends Authenticatable
         return "https://robohash.org/$hash?s=$size";
     }
 
+    //生成用户的激活令牌
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->activation_token = Str::random(10);
+        });
+    }
 }

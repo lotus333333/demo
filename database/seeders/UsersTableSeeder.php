@@ -14,13 +14,11 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = factory(User::class)->times(50)->make();
-        User::insert($users->makeVisible(['password', 'remember_token'])->toArray());
+        User::factory()->count(50)->create();
 
         $user = User::find(1);
-        $user->name = 'Aufree';
-        $user->email = 'aufree@yousails.com';
-        $user->password = bcrypt('password');
+        $user->name = 'Summer';
+        $user->email = 'summer@example.com';
         $user->is_admin = true;
         $user->save();
     }
