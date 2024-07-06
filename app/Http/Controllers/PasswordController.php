@@ -17,6 +17,28 @@ class PasswordController extends Controller
         return view('auth.passwords.email');
     }
 
+    //访问限流
+    public function __construct()
+    {
+        //重置密码的限流
+        $this->middleware('throttle:20,1', [
+            'only' => ['showLinkRequestForm']
+        ]);
+        //发送密码重置邮件的限流
+        $this->middleware('throttle:30,10', [
+            'only' => ['sendResetLinkEmail']
+        ]);
+        //登录限流
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+
+        // 限流 10 分钟十次
+        $this->middleware('throttle:100,10', [
+            'only' => ['store']
+        ]);
+    }
+
     //显示重置密码的表单
     public function showResetForm(Request $request)
     {
