@@ -116,19 +116,7 @@ class UsersController extends Controller
             $message->to($to)->subject($subject);
         });
     }
-   /* protected function sendEmailConfirmationTo($user)
-    {
-        $view = 'emails.confirm';
-        $data = compact('user');
-        $from = 'summer@example.com';
-        $name = 'Summer';
-        $to = $user->email;
-        $subject = "感谢注册 Weibo 应用！请确认你的邮箱。";
 
-        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
-            $message->from($from, $name)->to($to)->subject($subject);
-        });
-    }*/
 
     //用户激活
     public function confirmEmail($token)
@@ -144,4 +132,19 @@ class UsersController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
+    //显示用户关注人列表
+    public function followings(User $user)
+    {
+        $users = $user->followings()->paginate(20);
+        $title = $user->name . '关注的人';
+        return view('users.show_follow', compact('users', 'title'));
+    }
+
+    //显示粉丝列表
+    public function followers(User $user)
+    {
+        $users = $user->followers()->paginate(20);
+        $title = $user->name . '的粉丝';
+        return view('users.show_follow', compact('users', 'title'));
+    }
 }
