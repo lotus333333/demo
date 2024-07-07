@@ -40,3 +40,5 @@ Route::post('password/email',  'App\Http\Controllers\PasswordController@sendRese
 Route::get('password/reset/{token}',  'App\Http\Controllers\PasswordController@showResetForm')->name('password.reset');
 //对提交过来的token和email数据进行配对，正确的话就更新密码
 Route::post('password/reset',  'App\Http\Controllers\PasswordController@reset')->name('password.update');
+
+Route::resource('statuses', 'App\Http\Controllers\StatusesController', ['only' => ['store', 'destroy']]);
