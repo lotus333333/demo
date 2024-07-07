@@ -46,3 +46,7 @@ Route::resource('statuses', 'App\Http\Controllers\StatusesController', ['only' =
 //粉丝列表的路由和用户关注者列表的路由
 Route::get('/users/{user}/followings', 'App\Http\Controllers\UsersController@followings')->name('users.followings');
 Route::get('/users/{user}/followers', 'App\Http\Controllers\UsersController@followers')->name('users.followers');
+
+//关注用户和取消用户
+Route::post('/users/followers/{user}', 'App\Http\Controllers\FollowersController@store')->name('followers.store');
+Route::delete('/users/followers/{user}', 'App\Http\Controllers\FollowersController@destroy')->name('followers.destroy');

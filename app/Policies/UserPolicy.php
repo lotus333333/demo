@@ -10,6 +10,7 @@ class UserPolicy
 {
     /**
      * Create a new policy instance.
+     * 授权策略
      */
     use HandlesAuthorization;
     public function update(User $currentUser, User $user)
@@ -20,5 +21,10 @@ class UserPolicy
     public function destroy(User $currentUser, User $user)
     {
         return $currentUser->is_admin && $currentUser->id !== $user->id;
+    }
+    //关注按钮--自己不能关注自己
+    public  function follow(User $currentUser, User $user)
+    {
+        return $currentUser->id!==$user->id;
     }
 }
