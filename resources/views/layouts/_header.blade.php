@@ -36,8 +36,6 @@
         </ul>
     </div>
 </nav>
-<!-- 引入 Bootstrap Bundle JS (includes Popper) -->
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+<script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
